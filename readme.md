@@ -18,7 +18,7 @@ Ein Python-basiertes Command-Line-Interface zur Dokumentation und Analyse sportl
 
 ---
 
-## Schnellstart für Reviewer
+## Schnellstart
 
 Um das Projekt ohne manuelles Eintippen von Daten sofort testen zu können, ist ein Demo-Skript enthalten:
 
