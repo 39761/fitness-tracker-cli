@@ -5,8 +5,8 @@ Ein Python-basiertes Command-Line-Interface zur Dokumentation und Analyse sportl
 ## Key Features
 
 * **Multi-User-System:** Verwaltung getrennter Profile mit individuellen Trainingsverläufen.
-* **Differenzierte Trainingsarten:** Spezifische Erfassung für Dauerlauf, Sprint und Krafttraining.* **Intelligentes Scoring:** Automatische Berechnung einer Wertung basierend auf Leistungsparametern (Dauerlauf-Pace, Krafttraining-Volumen und Sprint-Maximalgeschwindigkeit).
-
+* **Differenzierte Trainingsarten:** Spezifische Erfassung für Dauerlauf, Sprint und Krafttraining.
+* **Intelligentes Scoring:** Automatische Berechnung einer Wertung basierend auf Leistungsparametern (Dauerlauf-Pace, Krafttraining-Volumen und Sprint-Maximalgeschwindigkeit).
 * **Analyse-Tools:** Fortschrittsberichte über Wochen-Zusammenfassungen, Volumen-Progression und Pace-Entwicklung.
 * **Datenintegrität:** Einsatz von SQLite mit Foreign Key Constraints und robuster Eingabevalidierung.
 
@@ -46,7 +46,7 @@ Um das Projekt ohne manuelles Eintippen von Daten sofort testen zu können, ist 
 * `schema.sql`: Initiales Datenbank-Design (DDL) inklusive Relationen und Cascades.
 * `setup_testdata.py`: Utility-Skript zur schnellen Generierung einer Testumgebung.
 * `requirements.txt`: Liste der externen Abhängigkeiten für eine einfache Installation.
-* `docs/`: Dokumentation der Programmstruktur (UML-Diagramme als PNG und PlantUML-Quelle).
+* `docs/`: Dokumentation der Programmstruktur (UML-Diagramme als SVG und PlantUML-Quelle).
 * `tests/`: Verzeichnis mit Unit- und Integrationstests zur Sicherstellung der Code-Qualität.
 
 ---
@@ -71,12 +71,12 @@ Das Projekt folgt klaren Design-Patterns, um Wartbarkeit und Erweiterbarkeit zu 
 ### Domänenmodell (Klassendiagramm)
 Die Geschäftslogik ist streng objektorientiert abgebildet. Dabei werden Konzepte wie **abstrakte Basisklassen**, **Vererbung** (Spezialisierung der Trainingsarten) und **Komposition** (Krafttraining als Aggregator für Übungen) konsequent genutzt.
 
-![Klassendiagramm](./docs/models.png)
+![Klassendiagramm](./docs/models.svg)
 
 ### System-Ablauf (Sequenzdiagramm)
 Der Prozessfluss zeigt die saubere Trennung zwischen der Benutzeroberfläche (`CLI`), dem Datenzugriff (`Repository`) und der Persistenzschicht (`SQLite`). Die `CLI` kommuniziert dabei nie direkt mit der Datenbank, sondern nutzt das Repository als Vermittler (Kapselung).
 
-![Sequenzdiagramm](./docs/architecture.png)
+![Sequenzdiagramm](./docs/architecture.svg)
 
 ---
 
