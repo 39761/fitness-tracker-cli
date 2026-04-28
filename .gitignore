@@ -1,0 +1,35 @@
+# Python & Umgebungen
+.venv/
+venv/
+ENV/
+bin/
+lib/
+.env
+
+# Mac-spezifisch
+.DS_Store
+
+# PyCharm / IDE
+.idea/
+*.iml
+*.iws
+
+# Bytecode & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Datenbanken
+*.db
+*.db-journal
+*.sqlite3
+
+# Projekt-Spezifisches
+*.log
+
+# Interna und Notizen
+notes/
+internal/

@@ -1,0 +1,38 @@
+@startuml FitnessTracker_Sequenz
+autonumber
+skinparam Style strictuml
+skinparam SequenceMessageAlignment center
+
+actor "Nutzer (Sportler)" as User
+participant "FitnessCLI" as CLI
+participant "Training (Modell)" as Model
+participant "TrainingRepository" as Repo
+database "fitness.db" as DB
+
+== Initialisierung & Login ==
+User -> CLI: Programmstart
+CLI -> Repo: get_alle_benutzer()
+Repo -> DB: SELECT * FROM benutzer
+DB --> Repo: Liste der Nutzer
+Repo --> CLI: Nutzerdaten
+CLI -> User: Zeige Nutzerliste
+User -> CLI: Wählt ID (Login)
+CLI -> CLI: Setze _aktiver_nutzer_id
+
+== Training aufzeichnen ==
+User -> CLI: Wählt "Training aufzeichnen"
+CLI -> User: Abfrage (Datum, Dauer, Typ)
+User --> CLI: Eingabe der Daten
+create Model
+CLI -> Model: Instanziiere (z.B. Dauerlauf)
+CLI -> Repo: training_speichern(Model)
+
+activate Repo
+Repo -> DB: INSERT INTO trainings (Basisdaten)
+Repo -> DB: INSERT INTO dauerlauf_details (Spezifische Daten)
+Repo -> DB: commit()
+Repo --> CLI: Bestätigung
+deactivate Repo
+
+CLI -> User: "Gespeichert!"
+@enduml

@@ -1,0 +1,56 @@
+@startuml Fitness_Models_Klassendiagramm
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+
+class Training <<abstract>> {
+  + nutzer_id: int
+  + datum: str
+  + uhrzeit: str
+  + dauer_min: int
+  + training_id: int
+  + {abstract} berechne_wertung(): float
+}
+
+class Dauerlauf {
+  + distanz_km: float
+  + hf_mittel: int
+  + berechne_wertung(): float
+}
+
+class Sprint {
+  + anzahl: int
+  + max_kmh: float
+  + berechne_wertung(): float
+}
+
+class Krafttraining {
+  + uebungen: List<Uebung>
+  + add_uebung(u: Uebung)
+  + berechne_wertung(): float
+}
+
+class Uebung {
+  + name: str
+  + saetze: int
+  + wdh: int
+  + gewicht: float
+  + volumen(): float
+}
+
+class Benutzer {
+  + name: str
+  + nutzer_id: int
+  + trainings: List<Training>
+  + add_training(t: Training)
+}
+
+' Vererbungen (Pfeil mit weißer Spitze)
+Training <|-- Dauerlauf
+Training <|-- Sprint
+Training <|-- Krafttraining
+
+' Komposition/Aggregation (Raute)
+Krafttraining "1" *-- "1...n" Uebung : besteht aus >
+Benutzer "1" o-- "0...n" Training : besitzt >
+
+@enduml
