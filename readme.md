@@ -54,7 +54,7 @@ Um das Projekt ohne manuelles Eintippen von Daten sofort testen zu können, ist 
 ## Design-Entscheidungen (Highlights)
 
 ### UX-Optimierung (Nummernblock-Eingabe)
-Besonderes Augenmerk liegt auf der Effizienz der Dateneingabe. Die Validierungsmethoden in der `cli.py` bereinigen Trennzeichen automatisch. Das erlaubt die Eingabe von Datum und Uhrzeit ohne Sonderzeichen (z. B. `20260427` statt `2026-04-27`), was die Nutzung über den Nummernblock massiv beschleunigt.
+Besonderes Augenmerk liegt auf der Effizienz der Dateneingabe. Die Validierungsmethoden in der `cli.py` bereinigen Trennzeichen automatisch. Das erlaubt die Eingabe von Datum und Uhrzeit ohne Sonderzeichen (z. B. `20260427` statt `2026-04-27`) und somit ist die Nutzung des Nummernblocks für einen Großteil der Nutzer-Interaktionen mit der App ausreichend.
 
 ### Datenintegrität & Kaskadierung
 Durch konsequente Nutzung von `FOREIGN KEY` Constraints und `ON DELETE CASCADE` im Datenbankschema wird sichergestellt, dass beim Löschen eines Benutzers oder Trainings keine verwaisten Einträge in den Detail-Tabellen verbleiben.
