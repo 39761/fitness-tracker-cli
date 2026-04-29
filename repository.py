@@ -209,7 +209,7 @@ class TrainingRepository:
                 if row:
                     distanz, puls, dauer = row[0], row[1], row[2]
                     details["Distanz (km)"] = distanz
-                    details["Puls (Mittel)"] = puls
+                    details["Herzfrequenz (Mittel)"] = puls
 
                     # Pace sicher in Python berechnen (verhindert Division durch Null)
                     if distanz > 0:

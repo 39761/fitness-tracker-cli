@@ -47,17 +47,25 @@ class FitnessCLI:
                 f"Aktueller Nutzer: {self.aktiver_nutzer_name} (ID: {self.aktiver_nutzer_id})\n"
             )
 
-    def _input_int(self, prompt):
+    def _input_int(self, prompt, allow_zero=False):
         """Erzwingt die Eingabe einer positiven Ganzzahl durch den Benutzer und fragt
         nach, bis eine gültige Eingabe erfolgt ist."""
         while True:
             try:
-                val = int(input(prompt))
-                if val > 0:
-                    return val
-                print("Bitte einen Wert größer als 0 eingeben.")
+                raw_input = input(prompt).strip()
+                val = int(raw_input)
+
+                if val < 0:
+                    print("Bitte geben Sie eine positive Zahl ein.")
+                    continue
+
+                if val == 0 and not allow_zero:
+                    print("Eingabe darf nicht 0 sein.")
+                    continue
+
+                return val
             except ValueError:
-                print("Bitte eine Ganzzahl eingeben.")
+                print("Bitte geben Sie eine positive Ganzzahl ein.")
 
     def _input_float(self, prompt):
         """Erzwingt die Eingabe einer positiven Fließkommazahl durch den Benutzer.
@@ -257,7 +265,8 @@ class FitnessCLI:
         if wahl == "1":
             training = Dauerlauf(
                 distanz_km=self._input_float("Distanz (km): "),
-                hf_mittel=self._input_int("HF (0 für Skip): ") or None,
+                hf_mittel=self._input_int("Mittlere Herzfrequenz (0 für Skip): ", allow_zero=True)
+                or None,
                 **params,
             )
         elif wahl == "2":
