@@ -1,9 +1,8 @@
 # setup_testdata.py
 # Aufruf: python setup_testdata.py
 
-import sqlite3
 import os
-from datetime import datetime, timedelta
+import sqlite3
 
 
 def setup_demo_data():
@@ -55,7 +54,7 @@ def setup_demo_data():
             training_id INTEGER,
             name TEXT,
             saetze INTEGER,
-            wiederholungen INTEGER,
+            wdh INTEGER,
             gewicht REAL,
             FOREIGN KEY(training_id) REFERENCES trainings(id) ON DELETE CASCADE
         );
@@ -96,10 +95,10 @@ def setup_demo_data():
     """, (u_id,))
     t_id = cursor.lastrowid
     cursor.execute(
-        "INSERT INTO krafttraining_uebungen (training_id, name, saetze, wiederholungen, gewicht) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO krafttraining_uebungen (training_id, name, saetze, wdh, gewicht) VALUES (?, ?, ?, ?, ?)",
         (t_id, "Bankdrücken", 3, 10, 60.0))
     cursor.execute(
-        "INSERT INTO krafttraining_uebungen (training_id, name, saetze, wiederholungen, gewicht) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO krafttraining_uebungen (training_id, name, saetze, wdh, gewicht) VALUES (?, ?, ?, ?, ?)",
         (t_id, "Kniebeugen", 3, 12, 80.0))
 
     conn.commit()
