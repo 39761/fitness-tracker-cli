@@ -91,7 +91,7 @@ def setup_demo_data():
     # Gesamtvolumen: 4680kg / 100 = 46.8 Wertung
     cursor.execute("""
         INSERT INTO trainings (nutzer_id, typ, datum, uhrzeit, dauer_min, wertung)
-        VALUES (?, 'Krafttraining', '2026-04-24', '17:00', 60, 46.8)
+        VALUES (?, 'Krafttraining', '2026-04-24', '17:00', 60, 234)
     """, (u_id,))
     t_id = cursor.lastrowid
     cursor.execute(

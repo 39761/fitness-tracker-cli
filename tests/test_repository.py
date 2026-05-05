@@ -1,10 +1,13 @@
 # tests/test_repository.py
 # Aufruf: python -m pytest tests/test_repository.py -v
 
-import pytest
 import sqlite3
+
+import pytest
+
 from models import Dauerlauf, Krafttraining, Uebung, Sprint
 from repository import TrainingRepository
+
 
 @pytest.fixture
 def repo():
@@ -132,8 +135,8 @@ def test_analysis_tools(repo):
     summary = repo.get_uebersicht_kw()
     assert len(summary) >= 1
     assert summary[0][1] == 2  # Kraft + Lauf
-    # Wertung: 15.0 (Kraft) + 100.0 (Lauf: 10km * 10km/h) = 115.0
-    assert summary[0][3] == 135.0
+    # Wertung: 75.0 (Kraft) + 120.0 (Lauf: 10km * 12km/h) = 115.0
+    assert summary[0][3] == 195.0
 
 
 def test_training_wertung_speichern_und_zusammenfassung(repo):
@@ -284,4 +287,4 @@ def test_get_training_details(repo):
     assert details["Typ"] == "Dauerlauf"
     assert details["Distanz (km)"] == 10.0
     assert "Pace (min/km)" in details
-    assert details["Puls (Mittel)"] == 150
+    assert details["Herzfrequenz (Mittel)"] == 150
