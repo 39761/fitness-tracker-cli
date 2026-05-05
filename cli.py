@@ -411,7 +411,7 @@ class FitnessCLI:
                 tabulate(
                     data["Übungen"],
                     headers=["Übung", "Sätze", "Wdh", "kg"],
-                    tablefmt="grid",
+                    tablefmt="pqsl",
                 )
             )
         else:
@@ -450,7 +450,7 @@ class FitnessCLI:
                     + tabulate(
                         data,
                         headers=["KW", "Anzahl", "Min gesamt", "Wertung gesamt"],
-                        tablefmt="grid",
+                        tablefmt="psql",
                     )
                 )
             elif wahl == "2":
@@ -458,7 +458,7 @@ class FitnessCLI:
                 print(
                     "\n"
                     + tabulate(
-                        data, headers=["Datum", "Volumen (kg)"], tablefmt="fancy_grid"
+                        data, headers=["Datum", "Volumen (kg)"], tablefmt="psql"
                     )
                 )
             elif wahl == "3":
@@ -478,7 +478,7 @@ class FitnessCLI:
                 print(
                     "\n"
                     + tabulate(
-                        fmt, headers=["Datum", "km", "Min", "Pace"], tablefmt="simple"
+                        fmt, headers=["Datum", "km", "Min", "Pace"], tablefmt="psql"
                     )
                 )
             elif wahl == "0":
