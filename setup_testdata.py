@@ -69,19 +69,25 @@ def setup_demo_data():
 
     # --- Dauerlauf ---
     # 10km in 50 Min = 12 km/h -> Wertung 120.0
-    cursor.execute("""
+    cursor.execute(
+        """
         INSERT INTO trainings (nutzer_id, typ, datum, uhrzeit, dauer_min, wertung)
         VALUES (?, 'Dauerlauf', '2026-04-20', '10:00', 50, 120.0)
-    """, (u_id,))
+    """,
+        (u_id,),
+    )
     t_id = cursor.lastrowid
     cursor.execute("INSERT INTO dauerlauf_details VALUES (?, 10.0, 155)", (t_id,))
 
     # --- Sprint ---
     # 10 Sprints * 32.5 km/h = 325.0
-    cursor.execute("""
+    cursor.execute(
+        """
         INSERT INTO trainings (nutzer_id, typ, datum, uhrzeit, dauer_min, wertung)
         VALUES (?, 'Sprint', '2026-04-22', '18:30', 20, 325.0)
-    """, (u_id,))
+    """,
+        (u_id,),
+    )
     t_id = cursor.lastrowid
     cursor.execute("INSERT INTO sprint_details VALUES (?, 10, 32.5)", (t_id,))
 
@@ -89,22 +95,29 @@ def setup_demo_data():
     # Bankdrücken: 3 * 10 * 60 = 1800kg
     # Kniebeugen: 3 * 12 * 80 = 2880kg
     # Gesamtvolumen: 4680kg / 100 = 46.8 Wertung
-    cursor.execute("""
+    cursor.execute(
+        """
         INSERT INTO trainings (nutzer_id, typ, datum, uhrzeit, dauer_min, wertung)
         VALUES (?, 'Krafttraining', '2026-04-24', '17:00', 60, 234)
-    """, (u_id,))
+    """,
+        (u_id,),
+    )
     t_id = cursor.lastrowid
     cursor.execute(
         "INSERT INTO krafttraining_uebungen (training_id, name, saetze, wdh, gewicht) VALUES (?, ?, ?, ?, ?)",
-        (t_id, "Bankdrücken", 3, 10, 60.0))
+        (t_id, "Bankdrücken", 3, 10, 60.0),
+    )
     cursor.execute(
         "INSERT INTO krafttraining_uebungen (training_id, name, saetze, wdh, gewicht) VALUES (?, ?, ?, ?, ?)",
-        (t_id, "Kniebeugen", 3, 12, 80.0))
+        (t_id, "Kniebeugen", 3, 12, 80.0),
+    )
 
     conn.commit()
     conn.close()
     print("\nErfolg: 'fitness.db' wurde mit Musterdaten erstellt.")
-    print("Du kannst jetzt 'python cli.py' starten und den Nutzer 'Max Mustermann' wählen.")
+    print(
+        "Du kannst jetzt 'python cli.py' starten und den Nutzer 'Max Mustermann' wählen."
+    )
 
 
 if __name__ == "__main__":

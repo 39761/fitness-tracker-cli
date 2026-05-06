@@ -265,7 +265,9 @@ class FitnessCLI:
         if wahl == "1":
             training = Dauerlauf(
                 distanz_km=self._input_float("Distanz (km): "),
-                hf_mittel=self._input_int("Mittlere Herzfrequenz (0 für Skip): ", allow_zero=True)
+                hf_mittel=self._input_int(
+                    "Mittlere Herzfrequenz (0 für Skip): ", allow_zero=True
+                )
                 or None,
                 **params,
             )
@@ -411,7 +413,7 @@ class FitnessCLI:
                 tabulate(
                     data["Übungen"],
                     headers=["Übung", "Sätze", "Wdh", "kg"],
-                    tablefmt="pqsl",
+                    tablefmt="psql",
                 )
             )
         else:
@@ -457,9 +459,7 @@ class FitnessCLI:
                 data = self.repo.get_volumen_progression()
                 print(
                     "\n"
-                    + tabulate(
-                        data, headers=["Datum", "Volumen (kg)"], tablefmt="psql"
-                    )
+                    + tabulate(data, headers=["Datum", "Volumen (kg)"], tablefmt="psql")
                 )
             elif wahl == "3":
                 data = self.repo.get_dauerlauf_pace()

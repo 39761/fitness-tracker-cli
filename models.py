@@ -134,7 +134,9 @@ class Krafttraining(Training):
 
     def berechne_wertung(self) -> float:
         """Berechnet die Wertung auf Grundlage des Gesamtvolumens aller Übungen"""
-        return sum(u.volumen for u in self.uebungen) / 20   # Divisor sorgt für Skalierung
+        return (
+            sum(u.volumen for u in self.uebungen) / 20
+        )  # Divisor sorgt für Skalierung
 
     def __repr__(self):
         return f"Krafttraining({len(self.uebungen)} Übungen, ID={self.training_id})"

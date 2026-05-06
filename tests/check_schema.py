@@ -26,9 +26,17 @@ def run_schema_check():
         print("Erfolg: 'schema.sql' ist syntaktisch korrekt.")
 
         # 1. Tabellen-Vollständigkeit prüfen
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"
+        )
         tabellen = [t[0] for t in cursor.fetchall()]
-        erwartet = ["benutzer", "trainings", "dauerlauf_details", "sprint_details", "krafttraining_uebungen"]
+        erwartet = [
+            "benutzer",
+            "trainings",
+            "dauerlauf_details",
+            "sprint_details",
+            "krafttraining_uebungen",
+        ]
 
         for t in erwartet:
             if t in tabellen:
@@ -49,8 +57,10 @@ def run_schema_check():
         cursor.execute("PRAGMA foreign_key_list('trainings');")
         fks = cursor.fetchall()
         # Index 2 ist die Parent-Tabelle, Index 6 ist on_delete
-        if any(fk[2] == 'benutzer' and fk[6] == 'CASCADE' for fk in fks):
-            print("Check: ON DELETE CASCADE (benutzer -> trainings) erfolgreich erkannt.")
+        if any(fk[2] == "benutzer" and fk[6] == "CASCADE" for fk in fks):
+            print(
+                "Check: ON DELETE CASCADE (benutzer -> trainings) erfolgreich erkannt."
+            )
         else:
             print("⚠Warnung: CASCADE-Regel für benutzer -> trainings nicht gefunden.")
 

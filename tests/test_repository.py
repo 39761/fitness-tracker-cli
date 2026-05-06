@@ -15,19 +15,24 @@ def repo():
     conn = sqlite3.connect(":memory:")
     conn.execute("PRAGMA foreign_keys = ON;")
 
-    repository = TrainingRepository(connection=conn)    # Übergibt die offene Verbindung an das Repo.
-    repository.add_benutzer("Test User")      # Erstellt einen Standard-Benutzer, damit die Foreign Keys funktionieren
+    repository = TrainingRepository(
+        connection=conn
+    )  # Übergibt die offene Verbindung an das Repo.
+    repository.add_benutzer(
+        "Test User"
+    )  # Erstellt einen Standard-Benutzer, damit die Foreign Keys funktionieren
     return repository
+
 
 def test_save_dauerlauf(repo):
     # 1. Objekt erstellen
     lauf = Dauerlauf(
-        distanz_km = 10.0,
-        hf_mittel = 150,
-        nutzer_id = 1,
-        datum = "2026-04-25",
-        uhrzeit = "10:00",
-        dauer_min = 50
+        distanz_km=10.0,
+        hf_mittel=150,
+        nutzer_id=1,
+        datum="2026-04-25",
+        uhrzeit="10:00",
+        dauer_min=50,
     )
 
     # 2. Speichern
@@ -43,20 +48,23 @@ def test_save_dauerlauf(repo):
         assert res[2] == "2026-04-25"
 
         # Spezifische Details prüfen
-        detail = conn.execute("SELECT distanz_km, hf_mittel FROM dauerlauf_details").fetchone()
+        detail = conn.execute(
+            "SELECT distanz_km, hf_mittel FROM dauerlauf_details"
+        ).fetchone()
         assert detail is not None
         assert detail[0] == 10.0
         assert detail[1] == 150
 
+
 def test_save_sprint(repo):
     # 1. Objekt erstellen
     sprint = Sprint(
-        anzahl = 10,
-        max_kmh = 32.5,
-        nutzer_id = 1,
-        datum = "2026-04-26",
-        uhrzeit = "11:00",
-        dauer_min = 20
+        anzahl=10,
+        max_kmh=32.5,
+        nutzer_id=1,
+        datum="2026-04-26",
+        uhrzeit="11:00",
+        dauer_min=20,
     )
 
     # 2. Speichern
@@ -76,13 +84,11 @@ def test_save_sprint(repo):
         assert detail[0] == 10
         assert detail[1] == 32.5
 
+
 def test_save_krafttraining(repo):
     # 1. Objekt erstellen
     kraft = Krafttraining(
-        nutzer_id=1,
-        datum="2026-04-25",
-        uhrzeit="12:00",
-        dauer_min=60
+        nutzer_id=1, datum="2026-04-25", uhrzeit="12:00", dauer_min=60
     )
     kraft.add_uebung(Uebung(name="Bankdrücken", saetze=3, wdh=10, gewicht=60.0))
     kraft.add_uebung(Uebung(name="Kniebeugen", saetze=4, wdh=8, gewicht=80.0))
@@ -97,7 +103,9 @@ def test_save_krafttraining(repo):
         assert res[0] == "Krafttraining"
 
         # Übungen (Details) prüfen
-        cursor = conn.execute("SELECT name, gewicht FROM krafttraining_uebungen ORDER BY name")
+        cursor = conn.execute(
+            "SELECT name, gewicht FROM krafttraining_uebungen ORDER BY name"
+        )
         uebungen = cursor.fetchall()
 
         assert len(uebungen) == 2
@@ -107,16 +115,26 @@ def test_save_krafttraining(repo):
         assert uebungen[1][0] == "Kniebeugen"
         assert uebungen[1][1] == 80.0
 
+
 def test_analysis_tools(repo):
     # 1. Daten für Volumen-Test (Kraft)
-    kraft = Krafttraining(nutzer_id=1, datum="2026-04-20", uhrzeit="10:00", dauer_min=60)
+    kraft = Krafttraining(
+        nutzer_id=1, datum="2026-04-20", uhrzeit="10:00", dauer_min=60
+    )
     # Volumen: 3 * 10 * 50kg = 1500kg
     kraft.add_uebung(Uebung(name="Bankdrücken", saetze=3, wdh=10, gewicht=50.0))
     repo.training_speichern(kraft)
 
     # 2. Daten für Pace-Test (Laufen)
     # 10km in 50 Min = 5.0 min/km
-    lauf = Dauerlauf(distanz_km=10.0, hf_mittel=150, nutzer_id=1, datum="2026-04-21", uhrzeit="10:00", dauer_min=50)
+    lauf = Dauerlauf(
+        distanz_km=10.0,
+        hf_mittel=150,
+        nutzer_id=1,
+        datum="2026-04-21",
+        uhrzeit="10:00",
+        dauer_min=50,
+    )
     repo.training_speichern(lauf)
 
     # --- Prüfung Volumen ---
@@ -143,16 +161,32 @@ def test_training_wertung_speichern_und_zusammenfassung(repo):
     """Prüft die Speicherung der Wertung und die Aggregation in der KW-Übersicht."""
     # 1. Setup: Ein Sprint und ein Dauerlauf für denselben Zeitraum anlegen
     # Sprint: 10 * 30 = 300.0
-    sprint = Sprint(anzahl=10, max_kmh=30.0, nutzer_id=1, datum="2026-04-25", uhrzeit="10:00", dauer_min=20)
+    sprint = Sprint(
+        anzahl=10,
+        max_kmh=30.0,
+        nutzer_id=1,
+        datum="2026-04-25",
+        uhrzeit="10:00",
+        dauer_min=20,
+    )
     # Dauerlauf: 10km * 12km/h (60/50*10) = 120.0
-    lauf = Dauerlauf(distanz_km=10.0, hf_mittel=150, nutzer_id=1, datum="2026-04-25", uhrzeit="12:00", dauer_min=50)
+    lauf = Dauerlauf(
+        distanz_km=10.0,
+        hf_mittel=150,
+        nutzer_id=1,
+        datum="2026-04-25",
+        uhrzeit="12:00",
+        dauer_min=50,
+    )
 
     repo.training_speichern(sprint)
     repo.training_speichern(lauf)
 
     # 2. Einzelprüfung in der DB
     with repo._get_connection() as conn:
-        res = conn.execute("SELECT wertung FROM trainings WHERE typ='Sprint'").fetchone()
+        res = conn.execute(
+            "SELECT wertung FROM trainings WHERE typ='Sprint'"
+        ).fetchone()
         assert res[0] == 300.0
 
     # 3. Prüfung der Wochen-Zusammenfassung (KW Übersicht)
@@ -165,6 +199,7 @@ def test_training_wertung_speichern_und_zusammenfassung(repo):
     assert summary[0][2] == 70
     # Gesamtwertung: 300.0 + 120.0 = 420.0
     assert summary[0][3] == 420.0
+
 
 def test_user_management(repo):
     """Prüft das Anlegen, Abrufen und loeschen von Benutzern."""
@@ -186,7 +221,14 @@ def test_user_management(repo):
 def test_cascade_delete_training(repo):
     """Prüft, ob beim loeschen eines Trainings auch die Details (Dauerlauf) verschwinden."""
     # 1. Setup: Training mit Details speichern
-    lauf = Dauerlauf(distanz_km=12.0, hf_mittel=140, nutzer_id=1, datum="2026-04-20", uhrzeit="18:00", dauer_min=60)
+    lauf = Dauerlauf(
+        distanz_km=12.0,
+        hf_mittel=140,
+        nutzer_id=1,
+        datum="2026-04-20",
+        uhrzeit="18:00",
+        dauer_min=60,
+    )
     repo.training_speichern(lauf)
 
     # ID holen (es ist das erste Training)
@@ -208,7 +250,9 @@ def test_cascade_delete_user_complete(repo):
     """Prüft, ob beim loeschen eines Users ALLES (Trainings + Details) gelöscht wird."""
     # 1. Setup: User, Training und Krafttraining-Übungen
     u_id = repo.add_benutzer("Spezial-User")
-    kraft = Krafttraining(nutzer_id=u_id, datum="2026-04-21", uhrzeit="10:00", dauer_min=30)
+    kraft = Krafttraining(
+        nutzer_id=u_id, datum="2026-04-21", uhrzeit="10:00", dauer_min=30
+    )
     kraft.add_uebung(Uebung(name="Squats", saetze=3, wdh=10, gewicht=100.0))
     repo.training_speichern(kraft)
 
@@ -221,7 +265,10 @@ def test_cascade_delete_user_complete(repo):
         assert conn.execute("SELECT COUNT(*) FROM benutzer").fetchone()[0] == 1
         # Aber die Trainings und Übungen des gelöschten Users müssen weg sein
         assert conn.execute("SELECT COUNT(*) FROM trainings").fetchone()[0] == 0
-        assert conn.execute("SELECT COUNT(*) FROM krafttraining_uebungen").fetchone()[0] == 0
+        assert (
+            conn.execute("SELECT COUNT(*) FROM krafttraining_uebungen").fetchone()[0]
+            == 0
+        )
 
 
 def test_get_trainings_benutzer(repo):
@@ -231,30 +278,38 @@ def test_get_trainings_benutzer(repo):
     u2 = repo.add_benutzer("Nutzer 2")
 
     # Training für Nutzer 1
-    repo.training_speichern(Dauerlauf(distanz_km=5.0,
-        hf_mittel = 140,
-        nutzer_id = u1,
-        datum = "2026-05-01",
-        uhrzeit = "10:00",
-        dauer_min = 30
-    ))
+    repo.training_speichern(
+        Dauerlauf(
+            distanz_km=5.0,
+            hf_mittel=140,
+            nutzer_id=u1,
+            datum="2026-05-01",
+            uhrzeit="10:00",
+            dauer_min=30,
+        )
+    )
     # Training für Nutzer 2
-    repo.training_speichern(Dauerlauf(
-        distanz_km = 10.0,
-        hf_mittel = 150,
-        nutzer_id = u2,
-        datum = "2026-05-01",
-        uhrzeit = "11:00",
-        dauer_min = 50
-    ))
+    repo.training_speichern(
+        Dauerlauf(
+            distanz_km=10.0,
+            hf_mittel=150,
+            nutzer_id=u2,
+            datum="2026-05-01",
+            uhrzeit="11:00",
+            dauer_min=50,
+        )
+    )
     # Training für Nutzer 1 an anderem Datum
-    repo.training_speichern(Dauerlauf(distanz_km = 2.0,
-        hf_mittel = 120,
-        nutzer_id = u1,
-        datum = "2026-05-02",
-        uhrzeit = "9:00",
-        dauer_min = 15
-    ))
+    repo.training_speichern(
+        Dauerlauf(
+            distanz_km=2.0,
+            hf_mittel=120,
+            nutzer_id=u1,
+            datum="2026-05-02",
+            uhrzeit="9:00",
+            dauer_min=15,
+        )
+    )
 
     # 2. Test: Alle Trainings von User 1
     alle_u1 = repo.get_trainings_benutzer(u1)
@@ -273,12 +328,21 @@ def test_get_trainings_benutzer(repo):
 def test_get_training_details(repo):
     """Prüft, ob die spezifischen Details (z.B. Distanz) korrekt geladen werden."""
     # Setup: Ein Training mit Details speichern
-    lauf = Dauerlauf(distanz_km=10.0, hf_mittel=150, nutzer_id=1, datum="2026-04-25", uhrzeit="10:00", dauer_min=60)
+    lauf = Dauerlauf(
+        distanz_km=10.0,
+        hf_mittel=150,
+        nutzer_id=1,
+        datum="2026-04-25",
+        uhrzeit="10:00",
+        dauer_min=60,
+    )
     repo.training_speichern(lauf)
 
     # Die ID des gerade gespeicherten Trainings holen
     with repo._get_connection() as conn:
-        t_id = conn.execute("SELECT id FROM trainings ORDER BY id DESC LIMIT 1").fetchone()[0]
+        t_id = conn.execute(
+            "SELECT id FROM trainings ORDER BY id DESC LIMIT 1"
+        ).fetchone()[0]
 
     # Test: Details abrufen
     details = repo.get_training_details(t_id)
