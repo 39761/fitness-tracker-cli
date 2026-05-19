@@ -9,12 +9,14 @@ Ein Python-basiertes Command-Line-Interface zur Dokumentation und Analyse sportl
 * **Intelligentes Scoring:** Automatische Berechnung einer Wertung basierend auf Leistungsparametern (Dauerlauf-Pace, Krafttraining-Volumen und Sprint-Maximalgeschwindigkeit).
 * **Analyse-Tools:** Fortschrittsberichte über Wochen-Zusammenfassungen, Volumen-Progression und Pace-Entwicklung.
 * **Datenintegrität:** Einsatz von SQLite mit Foreign Key Constraints und robuster Eingabevalidierung.
+* **[In Planung] Web-Schnittstelle (API):** Ermöglichung des Zugriffs auf Trainingsdaten durch externe Analyse-Programme.
 
 ## Tech Stack
 
 * **Sprache:** Python 3.x
 * **Datenbank:** SQLite3
 * **Bibliotheken:** `tabulate` (CLI-Formatierung), `pytest` (Testing)
+* **[In Planung] Zusätzliche Bibliotheken:** `FastAPI` (Schnittstellen-Framework) und `Pydantic` (Datenvalidierung)
 
 ---
 
