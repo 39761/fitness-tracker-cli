@@ -1,22 +1,25 @@
 # Fitness-Tracker CLI
 
-Ein Python-basiertes Command-Line-Interface zur Dokumentation und Analyse sportlicher Leistungen. Das Tool wurde mit Fokus auf eine modulare Architektur (**Separation of Concerns**) und eine optimierte Benutzererfahrung bei der Dateneingabe entwickelt.
+Ein Python-basiertes Command-Line-Interface zur Dokumentation und Analyse sportlicher Leistungen. Das Tool wurde mit Fokus auf eine modulare Architektur (**Separation of Concerns**), objektorientiertes Design und eine effiziente Benutzerführung bei der Dateneingabe entwickelt.
 
 ## Key Features
 
 * **Multi-User-System:** Verwaltung getrennter Profile mit individuellen Trainingsverläufen.
 * **Differenzierte Trainingsarten:** Spezifische Erfassung für Dauerlauf, Sprint und Krafttraining.
-* **Intelligentes Scoring:** Automatische Berechnung einer Wertung basierend auf Leistungsparametern (Dauerlauf-Pace, Krafttraining-Volumen und Sprint-Maximalgeschwindigkeit).
+* **Objektorientiertes Domänenmodell:** Einsatz von abstrakten Basisklassen, Vererbung und Komposition zur Modellierung der Trainingsarten.
+* **Intelligentes Scoring:** Automatische Berechnung einer Wertung basierend auf Leistungsparametern (Dauerlauf-Geschwindigkeit, Sprint-Maximalgeschwindigkeit und Krafttrainings-Volumen).
 * **Analyse-Tools:** Fortschrittsberichte über Wochen-Zusammenfassungen, Volumen-Progression und Pace-Entwicklung.
-* **Datenintegrität:** Einsatz von SQLite mit Foreign Key Constraints und robuster Eingabevalidierung.
-* **[In Planung] Web-Schnittstelle (API):** Ermöglichung des Zugriffs auf Trainingsdaten durch externe Analyse-Programme.
+* **Datenintegrität:** Einsatz von SQLite mit `FOREIGN KEY` Constraints, `ON DELETE CASCADE` und robuster Eingabevalidierung.
+* **Testbare Architektur:** Klare Trennung zwischen CLI, Geschäftslogik und Persistenzschicht zur Unterstützung der automatisierten Tests.
+* **[In Planung] Web-Schnittstelle (API):** Erweiterbarkeit durch geplante REST-API auf Basis von FastAPI.
 
 ## Tech Stack
 
 * **Sprache:** Python 3.x
 * **Datenbank:** SQLite3
 * **Bibliotheken:** `tabulate` (CLI-Formatierung), `pytest` (Testing)
-* **[In Planung] Zusätzliche Bibliotheken:** `FastAPI` (Schnittstellen-Framework) und `Pydantic` (Datenvalidierung)
+* **Modellierung & Dokumentation:** PlantUML
+* **[In Planung] Zusätzliche Bibliotheken:** `FastAPI` (REST-API) und `Pydantic` (Datenvalidierung)
 
 ---
 
@@ -24,20 +27,23 @@ Ein Python-basiertes Command-Line-Interface zur Dokumentation und Analyse sportl
 
 **Voraussetzungen:** Python 3.x, `pip`
 
-Um das Projekt ohne manuelles Eintippen von Daten sofort testen zu können, ist ein Demo-Skript enthalten:
+Um das Projekt ohne manuelles Erfassen von Trainingsdaten direkt testen zu können, ist ein Skript zur Generierung relationaler Demo-Daten enthalten.
 
-1.  **Repo klonen und Abhängigkeiten installieren:**
+1. **Repository klonen und Abhängigkeiten installieren**
     ```bash
     git clone https://github.com/39761/fitness-tracker-cli
     cd cv_training_app
     pip install -r requirements.txt
     ```
-2.  **Demo-Daten generieren:**
+
+2. **Demo-Daten generieren**
     ```bash
     python setup_testdata.py
     ```
-    *Erstellt eine `fitness.db` mit einem aktiven Nutzer ("Max Mustermann") und Beispiel-Trainings.*
-3.  **Anwendung starten:**
+
+    Dadurch wird lokal eine `fitness.db` mit Beispielstrukturen und Trainingsdaten erzeugt.
+
+3. **Anwendung starten**
     ```bash
     python cli.py
     ```
@@ -46,55 +52,94 @@ Um das Projekt ohne manuelles Eintippen von Daten sofort testen zu können, ist 
 
 ## Projektstruktur
 
-```
+```text
 cv_training_app/
-│   cli.py                        # Präsentationsschicht und Menüführung des Command-Line-Interface
-│   models.py                     # Domänenmodelle & Geschäftslogik (OOP-Struktur der Trainingsarten)
-│   README.md                     # Zentrale Projektdokumentation mit Setup-Anweisungen und Features
-│   repository.py                 # Data Access Layer (Kapselung der SQL-Logik und DB-Zugriffe)
-│   requirements.txt              # Liste der externen Projektabhängigkeiten für die Installation
-│   schema.sql                    # Initiales Datenbank-Design (DDL) inklusive Relationen und Cascades
-│   setup_testdata.py             # Skript zur lokalen Generierung von relationalen Demo-Testdaten
+│   cli.py                        # Präsentationsschicht und Menüführung des CLI
+│   models.py                     # Objektorientiertes Domänenmodell & Geschäftslogik
+│   repository.py                 # Data Access Layer / SQLite-Kommunikation
+│   schema.sql                    # SQL-DDL inkl. Relationen und Cascades
+│   setup_testdata.py             # Generierung relationaler Demo-Daten
+│   requirements.txt              # Externe Projektabhängigkeiten
+│   README.md                     # Projektdokumentation
 │
-├───docs                          
-│       architecture.puml         # PlantUML-Quellcode des Sequenzdiagramms für den System-Ablauf
-│       models.puml               # PlantUML-Quellcode des Klassendiagramms für das Domänenmodell
-│       *.svg                # Gerendertes Grafiken
+├───docs
+│       architecture.puml         # PlantUML-Quelle des Sequenzdiagramms für den Programmablauf
+│       models.puml               # PlantUML-Quelle des Klassendiagramms für das Domänenmodell
+│       *.svg                     # Gerenderte Diagramme
 │
 └───tests
-        check_schema.py           # Test zur strukturellen Validierung der Live-Datenbank gegen das SQL-Schema
-        test_integration.py       # Integrationstests für das Zusammenspiel von Modellen und Repository
-        test_models.py            # Unit-Tests zur Verifizierung der mathematischen Scoring-Formeln
-        test_repository.py        # Datenbank-Tests für die CRUD-Operationen und Joins
-
+        check_schema.py           # Validierung der Live-Datenbank gegen schema.sql
+        test_integration.py       # Integrationstests für Repository & Modelle
+        test_models.py            # Unit-Tests der Berechnungslogik
+        test_repository.py        # Tests der Datenbankoperationen
 ```
 
 ---
 
 ## Design-Entscheidungen (Highlights)
 
-### UX-Optimierung (Nummernblock-Eingabe)
-Besonderes Augenmerk liegt auf der Effizienz der Dateneingabe. Die Validierungsmethoden in der `cli.py` bereinigen Trennzeichen automatisch. Das erlaubt die Eingabe von Datum und Uhrzeit ohne Sonderzeichen (z. B. `20260427` statt `2026-04-27`) und somit ist die Nutzung des Nummernblocks für einen Großteil der Nutzer-Interaktionen mit der App ausreichend.
+### Schichtenarchitektur & Separation of Concerns
+
+Die Anwendung trennt Benutzeroberfläche (`cli.py`), Geschäftslogik (`models.py`) und Persistenz (`repository.py`) konsequent voneinander.  
+Dadurch bleiben Komponenten unabhängig testbar und Erweiterungen — beispielsweise eine zukünftige Web-API — können ohne tiefgreifende Änderungen integriert werden.
+
+### Objektorientiertes Domänenmodell
+
+Die Trainingsarten basieren auf einer abstrakten Basisklasse `Training`.  
+Spezialisierungen wie `Dauerlauf`, `Sprint` und `Krafttraining` implementieren eigene Berechnungslogiken für Trainingswertungen.
+
+Für Krafttraining wird zusätzlich das Prinzip der **Komposition** genutzt:  
+Ein `Krafttraining` aggregiert mehrere `Uebung`-Objekte mit eigenem Trainingsvolumen.
+
+### UX-Optimierung der Dateneingabe
+
+Die CLI erlaubt flexible Eingaben für Datum und Uhrzeit ohne Sonderzeichen.  
+Dadurch können viele Eingaben effizient über den Nummernblock erfolgen:
+
+* `20260427` → `2026-04-27`
+* `1830` → `18:30`
+
+Zusätzlich akzeptiert die numerische Eingabe sowohl Punkte als auch deutsche Kommata (`10,5`).
 
 ### Datenintegrität & Kaskadierung
-Durch konsequente Nutzung von `FOREIGN KEY` Constraints und `ON DELETE CASCADE` im Datenbankschema wird sichergestellt, dass beim Löschen eines Benutzers oder Trainings keine verwaisten Einträge in den Detail-Tabellen verbleiben.
+
+Durch konsequente Nutzung von `FOREIGN KEY` Constraints und `ON DELETE CASCADE` wird sichergestellt, dass beim Löschen von Benutzern oder Trainings keine verwaisten Datensätze verbleiben.
 
 ### Defensive Programmierung
-Alle numerischen Eingaben werden auf logische Korrektheit geprüft (z. B. Ausschluss von Nullwerten bei Divisionen), um Laufzeitfehler wie `ZeroDivisionError` oder `TypeError` bei der Analyse-Berechnung zu verhindern.
+
+Numerische Eingaben werden validiert, um fehlerhafte Zustände und Laufzeitfehler zu verhindern:
+
+* Verhinderung negativer Werte
+* Schutz vor Division durch Null
+* Datums- und Uhrzeitvalidierung
+* Typvalidierung für numerische Eingaben
 
 ---
 
 ## Architektur & Dokumentation
 
-Das Projekt folgt klaren Design-Patterns, um Wartbarkeit und Erweiterbarkeit zu garantieren. Die Struktur ist in den folgenden Diagrammen visualisiert:
+Die Systemarchitektur und das Domänenmodell wurden zusätzlich mit PlantUML dokumentiert.
 
 ### Domänenmodell (Klassendiagramm)
-Die Geschäftslogik ist streng objektorientiert abgebildet. Dabei werden Konzepte wie **abstrakte Basisklassen**, **Vererbung** (Spezialisierung der Trainingsarten) und **Komposition** (Krafttraining als Aggregator für Übungen) konsequent genutzt.
+
+Das Klassendiagramm visualisiert die objektorientierte Struktur der Anwendung mit:
+
+* abstrakter Basisklasse
+* Vererbung der Trainingsarten
+* Komposition innerhalb des Krafttrainings
+* Aggregation der Trainings pro Benutzer
 
 ![Klassendiagramm](./docs/models.svg)
 
 ### System-Ablauf (Sequenzdiagramm)
-Der Prozessfluss zeigt die saubere Trennung zwischen der Benutzeroberfläche (`CLI`), dem Datenzugriff (`Repository`) und der Persistenzschicht (`SQLite`). Die `CLI` kommuniziert dabei nie direkt mit der Datenbank, sondern nutzt das Repository als Vermittler (Kapselung).
+
+Das Sequenzdiagramm zeigt den Datenfluss zwischen:
+
+* Benutzeroberfläche (`CLI`)
+* Repository-Schicht
+* SQLite-Datenbank
+
+Die CLI kommuniziert dabei ausschließlich über das Repository mit der Persistenzschicht.
 
 ![Sequenzdiagramm](./docs/architecture.svg)
 
@@ -102,21 +147,49 @@ Der Prozessfluss zeigt die saubere Trennung zwischen der Benutzeroberfläche (`C
 
 ## Testing
 
-Die Testsuite im Ordner `tests/` stellt die Stabilität der Kernfunktionen sicher:
+Die Testsuite im Ordner `tests/` überprüft zentrale Komponenten der Anwendung automatisiert.
 
-* `test_models.py`: Unit-Tests für die Berechnungslogik.
-* `test_repository.py`: Datenbank-Tests (CRUD-Operationen und Joins).
-* `test_integration.py`: Überprüfung des Zusammenspiels zwischen Repository und Modellen.
-* `check_schema.py`: Validierung der aktuellen Tabellenstruktur gegen die `schema.sql`.
+### Enthaltene Tests
 
-**Tests ausführen:**
+* `test_models.py`
+  * Unit-Tests der Wertungs- und Berechnungslogik
+
+* `test_repository.py`
+  * CRUD-Operationen
+  * Datenbankzugriffe
+  * Relationen und Joins
+  * Fremdschlüssel-Constraints und Löschkaskade
+  
+* `test_integration.py`
+  * Zusammenspiel von Repository und Domänenmodellen
+
+* `check_schema.py`
+  * Validierung der tatsächlichen Tabellenstruktur gegen `schema.sql`
+
+### Tests ausführen
+
 ```bash
 python -m pytest tests/ -v
 ```
 
 ---
 
+## Hinweise zum Projektstatus
+
+Dieses Projekt entstand als Lern- und Portfolio-Projekt mit Fokus auf:
+
+* objektorientierte Softwareentwicklung
+* relationale Datenmodellierung
+* Testbarkeit
+* saubere Schichtenarchitektur
+* defensive Eingabevalidierung
+
+Die geplante Erweiterung um eine REST-API wurde architektonisch bereits berücksichtigt, ist jedoch noch nicht implementiert.
+
+---
+
 ## Lizenz
 
-Dieses Projekt wurde zu Bildungszwecken im Rahmen eines Portfolios erstellt.
-Frei zur Nutzung und Modifikation.
+Dieses Projekt wurde zu Bildungs- und Portfoliozwecken erstellt.
+
+Freie Nutzung und Modifikation für Lernzwecke.
