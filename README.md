@@ -104,7 +104,7 @@ Der Prozessfluss zeigt die saubere Trennung zwischen der Benutzeroberfläche (`C
 
 Die Testsuite im Ordner `tests/` stellt die Stabilität der Kernfunktionen sicher:
 
-* `test_models.py`: Unit-Tests für die Berechnungslogik (Scoring-Formeln).
+* `test_models.py`: Unit-Tests für die Berechnungslogik.
 * `test_repository.py`: Datenbank-Tests (CRUD-Operationen und Joins).
 * `test_integration.py`: Überprüfung des Zusammenspiels zwischen Repository und Modellen.
 * `check_schema.py`: Validierung der aktuellen Tabellenstruktur gegen die `schema.sql`.

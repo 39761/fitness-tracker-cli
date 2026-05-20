@@ -94,7 +94,7 @@ def setup_demo_data():
     # --- Krafttraining ---
     # Bankdrücken: 3 * 10 * 60 = 1800kg
     # Kniebeugen: 3 * 12 * 80 = 2880kg
-    # Gesamtvolumen: 4680kg / 100 = 46.8 Wertung
+    # Gesamtvolumen: 4680kg / 20 = 234 Wertung
     cursor.execute(
         """
         INSERT INTO trainings (nutzer_id, typ, datum, uhrzeit, dauer_min, wertung)
