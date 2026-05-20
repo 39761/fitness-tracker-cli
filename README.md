@@ -22,10 +22,14 @@ Ein Python-basiertes Command-Line-Interface zur Dokumentation und Analyse sportl
 
 ## Schnellstart
 
+**Voraussetzungen:** Python 3.x, `pip`
+
 Um das Projekt ohne manuelles Eintippen von Daten sofort testen zu können, ist ein Demo-Skript enthalten:
 
-1.  **Abhängigkeiten installieren:**
+1.  **Repo klonen und Abhängigkeiten installieren:**
     ```bash
+    git clone https://github.com/39761/fitness-tracker-cli
+    cd cv_training_app
     pip install -r requirements.txt
     ```
 2.  **Demo-Daten generieren:**
@@ -42,14 +46,28 @@ Um das Projekt ohne manuelles Eintippen von Daten sofort testen zu können, ist 
 
 ## Projektstruktur
 
-* `cli.py`: Präsentationsschicht & Menüführung.
-* `repository.py`: Data Access Layer (Kapselung der SQL-Logik).
-* `models.py`: Domänenmodelle & Geschäftslogik (OOP-Struktur der Trainingsarten).
-* `schema.sql`: Initiales Datenbank-Design (DDL) inklusive Relationen und Cascades.
-* `setup_testdata.py`: Utility-Skript zur schnellen Generierung einer Testumgebung.
-* `requirements.txt`: Liste der externen Abhängigkeiten für eine einfache Installation.
-* `docs/`: Dokumentation der Programmstruktur (UML-Diagramme als SVG und PlantUML-Quelle).
-* `tests/`: Verzeichnis mit Unit- und Integrationstests zur Sicherstellung der Code-Qualität.
+```
+cv_training_app/
+│   cli.py                        # Präsentationsschicht und Menüführung des Command-Line-Interface
+│   models.py                     # Domänenmodelle & Geschäftslogik (OOP-Struktur der Trainingsarten)
+│   README.md                     # Zentrale Projektdokumentation mit Setup-Anweisungen und Features
+│   repository.py                 # Data Access Layer (Kapselung der SQL-Logik und DB-Zugriffe)
+│   requirements.txt              # Liste der externen Projektabhängigkeiten für die Installation
+│   schema.sql                    # Initiales Datenbank-Design (DDL) inklusive Relationen und Cascades
+│   setup_testdata.py             # Skript zur lokalen Generierung von relationalen Demo-Testdaten
+│
+├───docs                          
+│       architecture.puml         # PlantUML-Quellcode des Sequenzdiagramms für den System-Ablauf
+│       models.puml               # PlantUML-Quellcode des Klassendiagramms für das Domänenmodell
+│       *.svg                # Gerendertes Grafiken
+│
+└───tests
+        check_schema.py           # Test zur strukturellen Validierung der Live-Datenbank gegen das SQL-Schema
+        test_integration.py       # Integrationstests für das Zusammenspiel von Modellen und Repository
+        test_models.py            # Unit-Tests zur Verifizierung der mathematischen Scoring-Formeln
+        test_repository.py        # Datenbank-Tests für die CRUD-Operationen und Joins
+
+```
 
 ---
 
